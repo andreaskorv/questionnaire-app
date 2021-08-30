@@ -25,8 +25,8 @@ export class CreateQuestionComponent implements OnInit {
         forType: new FormControl(0),
         forText: new FormControl(""),
         forAnswers: this.fb.array([])
-      }
-    )
+      });
+    
   }
 
   ngOnInit(): void {

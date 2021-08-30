@@ -15,6 +15,12 @@ export class QuestionManagementComponent implements OnInit {
 
   questions: IQuestion[] = [];
 
+  questionTypes: string[] = [
+    "Single answer",
+    "Multiple answers",
+    "Open answer"
+  ];
+
   constructor(
     private store: Store<IAppState>
     ) {

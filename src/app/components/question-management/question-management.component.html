@@ -1,5 +1,23 @@
-<span *ngFor="let question of questions">
-    <button mat-button>Edit</button>
-    <button mat-button>Delete</button>
-</span>
-<button mat-button>Create new question</button>
+<table mat-table>
+    <tbody>
+        <tr *ngFor="let question of questions; let i = index">
+            <td>
+                {{question.text}}
+            </td>
+            <td>
+                {{question.type}}
+            </td>
+            <td>
+                {{question.date}}
+            </td>
+            <td>
+                <button mat-raised-button routerLink="edit" color="primary" [queryParams]="{'id': question.id }">Edit</button>
+            </td>
+            <td>
+                <button mat-raised-button color="warn" (click)="removeQuestion(i)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<button mat-raised-button color="primary" routerLink="/new">Create new question</button>
+<button mat-raised-button color="primary" routerLink="/lists">Add answers</button>

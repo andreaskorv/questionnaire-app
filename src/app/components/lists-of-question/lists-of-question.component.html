@@ -1,1 +1,47 @@
-<p>lists-of-question works!</p>
+<button mat-raised-button color="primary" routerLink="/">Return</button>
+<table>
+    <tbody>
+        <tr>
+            <td>
+                <form *ngFor="let question of unansweredQuestions; let i = index" [formGroup]="unansweredQuestionsForm[i]" (ngSubmit)="addAnswer(i)">
+                    <mat-card class="cardclass">
+                        <mat-label><b>{{question.text}}</b></mat-label>
+                        <div *ngIf="question.type!=2" formArrayName="answers">
+                            <span *ngFor="let answer of question.answers; let j = index" formGroupName="{{j}}">
+                                <mat-checkbox formControlName="isSelected">
+                                    {{answer}}
+                                </mat-checkbox>
+                            </span>
+                        </div>
+                        <div *ngIf="question.type==2">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Write an answer (from 1 to 255 characters)</mat-label>
+                                <textarea matInput formControlName="text"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <button type="submit" mat-raised-button [disabled]="isAnswerUncorrect(i)" color="primary">Add answer</button>
+                    </mat-card>
+                </form>
+                <br>
+            </td>
+            <td>
+                <mat-card *ngFor="let question of answeredQuestions; let i = index" class="cardclass">
+                    <mat-label><b>{{question.text}}</b></mat-label>
+                    <div *ngIf="question.type!=2">
+                        <span *ngFor="let answer of question.answers; let j = index">
+                            <mat-label *ngIf="check(i, j)">
+                                {{answer}}
+                            </mat-label>
+                        </span>
+                    </div>
+                    <div *ngIf="question.type==2">
+                        <mat-label>
+                            {{question.truth?.openAnswer}}
+                        </mat-label>
+                    </div>
+                    <button mat-raised-button (click)="removeAnswer(i)" color="warn">Delete answer</button>
+                </mat-card>
+            </td>
+        </tr>
+    </tbody>
+</table>

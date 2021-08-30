@@ -1,1 +1,27 @@
-<p>edit-question works!</p>
+<button mat-raised-button color="primary" routerLink="/">Return</button>
+<form class="example-form" [formGroup]="question" (ngSubmit)="editQuestion()">
+  <label class="example-margin">Question type:</label>
+  <mat-radio-group formControlName="forType">
+    <mat-radio-button class="example-margin" value="0">Single choice</mat-radio-button>
+    <mat-radio-button class="example-margin" value="1">Multiple choice</mat-radio-button>
+    <mat-radio-button class="example-margin" value="2">Open</mat-radio-button>
+  </mat-radio-group>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Input question</mat-label>
+    <textarea matInput placeholder="Ex. Who was James of Molay?" formControlName="forText"></textarea>
+  </mat-form-field>
+  <span *ngIf="forType.value!=2">
+    <label class="example-margin">Answers:</label>
+    <span formArrayName="forAnswers">
+      <div *ngFor="let option of forAnswers.controls; let i = index" formGroupName="{{i}}">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Input option</mat-label>
+          <input type="text" matInput formControlName="answer">
+        </mat-form-field>
+        <button type="button" mat-raised-button color="warn" (click)="deleteOption(i)">Delete option</button><br>
+      </div>
+    </span>
+    <button type="button" mat-raised-button color="primary" (click)="addOption()">Add new option</button><br>
+  </span>
+  <button type="submit" mat-raised-button color="primary">Change!</button>
+</form>

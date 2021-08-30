@@ -20,6 +20,7 @@ import { QuestionManagementComponent } from './components/question-management/qu
 import { ListsOfQuestionComponent } from './components/lists-of-question/lists-of-question.component';
 import { appReducers } from './store/reducers/app.reducers';
 import { QuestionEffects } from './store/effects/question.effects';
+import { QuestionComponentComponent } from './components/question-component/question-component.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { QuestionEffects } from './store/effects/question.effects';
     CreateQuestionComponent,
     EditQuestionComponent,
     QuestionManagementComponent,
-    ListsOfQuestionComponent
+    ListsOfQuestionComponent,
+    QuestionComponentComponent
   ],
   imports: [
     BrowserModule,

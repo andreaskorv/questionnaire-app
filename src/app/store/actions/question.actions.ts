@@ -40,7 +40,7 @@ export const EditQuestion = createAction(EQuestionActions.EditQuestionAction,
     props<{question : IQuestion}>());
 
 export const RemoveQuestion = createAction(EQuestionActions.RemoveQuestionAction,
-    props<{question : IQuestion}>());
+    props<{question : string}>());
 
 export const CreateAnswer = createAction(EQuestionActions.CreateAnswerAction,
     props<{question: IQuestion}>());
@@ -55,7 +55,7 @@ export const RemoveAnswer = createAction(EQuestionActions.RemoveAnswerAction,
         props<{question : IQuestion}>());
     
     export const RemoveQuestionSuccess = createAction(EQuestionActions.RemoveQuestionSuccessAction,
-        props<{question : IQuestion}>());
+        props<{question : string}>());
     
     export const CreateAnswerSuccess = createAction(EQuestionActions.CreateAnswerSuccessAction,
         props<{question: IQuestion}>());

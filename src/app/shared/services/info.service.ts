@@ -18,8 +18,7 @@ export class InfoService {
     return localStorage.getItem("state") || "";
   }
 
-  prototypeFunction(question: IQuestion, func: any): boolean {
-    //console.log("Он осенён римским крестом");
+  prototypeFunction(question: any, func: any): boolean {
     try {
       let storageValue = localStorage.getItem("state") || "";
       let state = JSON.parse(storageValue);
@@ -30,15 +29,10 @@ export class InfoService {
         }
       };
       let forSet = JSON.stringify(state);
-      //console.log(forSet);
-      //console.log(question);
       localStorage.setItem("state", forSet);
-      let storageValue_ = localStorage.getItem("state") || "";
-      //console.log(storageValue_);
       return true;
     }
     catch {
-      //console.log("Но израненный король упал без сил");
       return false;
     }
   }

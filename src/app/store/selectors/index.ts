@@ -6,7 +6,6 @@ import { isQuestionAnswered } from 'src/app/shared/modules/isanswered';
 import { sort } from 'src/app/shared/modules/changedb';
 
 export const selectAllQuestions = (state: IAppState) => {
-    //console.log(state);
     let forReturn = state.questionState.questions.slice();
     forReturn.sort(sort);
     return forReturn;};
@@ -16,7 +15,6 @@ export const selectCertainQuestions = createSelector(
         state: IAppState,
         isAnswered: boolean
     ) => {
-        //console.log(state);
         let forQuestions = selectAllQuestions(state);
         let forReturn = forQuestions.filter(
             item => isQuestionAnswered(item) == isAnswered
@@ -35,12 +33,10 @@ export const selectCertainQuestion = createSelector(
         state: IAppState,
         id: string
     ) => {
-        //console.log(state);
         let forQuestions = state.questionState.questions.slice();
         let forReturn = forQuestions.filter(
             item => item.id == id
         );
-        //console.log(forReturn);
         return forReturn[0];
     }
 )

@@ -29,9 +29,9 @@ export class EditQuestionComponent implements OnInit {
   ) {
     this.question = this.formBuilder.group(
       {
-        forType: new FormControl(0),
-        forText: new FormControl(""),
-        forAnswers: this.formBuilder.array([])
+        type: new FormControl(0),
+        text: new FormControl(""),
+        answers: this.formBuilder.array([])
       }
     );
 
@@ -40,16 +40,15 @@ export class EditQuestionComponent implements OnInit {
           this.id = queryParam['id'];
       }
     );
-    console.log(this.id);
     this.store.select(selectAllQuestions).subscribe(
       data => {
         let question = data.filter(item => item.id == this.id)[0];
         this.date = question.date;
-        this.forType.setValue(question.type);
-        this.forText.setValue(question.text);
+        this.type.setValue(question.type);
+        this.text.setValue(question.text);
         for (let answer of question.answers) {
           this.addOption();
-          this.forAnswers.controls[this.forAnswers.controls.length - 1].setValue({answer : answer});
+          this.answers.controls[this.answers.controls.length - 1].setValue({answer : answer});
         }
 
       });
@@ -60,37 +59,35 @@ export class EditQuestionComponent implements OnInit {
   }
 
   editQuestion() {
-    this.router.navigateByUrl('');
     let question = new IQuestion();
     question.id = this.id;
-    question.text = this.forText.value;
-    question.type = this.forType.value;
+    question.text = this.text.value;
+    question.type = this.type.value;
     question.date = this.date;
-    question.answers = this.forAnswers.controls.map(item => item.value.answer);
-    console.log(question);
+    question.answers = this.answers.controls.map(item => item.value.answer);
     this.store.dispatch(EditQuestion({question: question}));
     this.router.navigateByUrl('');
   }
 
   addOption() {
-    (this.forAnswers as FormArray).push(new FormGroup({
+    (this.answers as FormArray).push(new FormGroup({
       answer: new FormControl("")
     }));
   }
 
   deleteOption(i: number) {
-    (this.forAnswers as FormArray).removeAt(i);
+    (this.answers as FormArray).removeAt(i);
   }
 
-  get forAnswers() {
+  get answers() {
     return this.question.get('forAnswers') as FormArray;
   }
 
-  get forType() {
+  get type() {
     return this.question.get('forType') as FormControl;
   }
 
-  get forText() {
+  get text() {
     return this.question.get('forText') as FormControl;
   }
 

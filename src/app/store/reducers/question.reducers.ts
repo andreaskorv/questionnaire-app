@@ -6,20 +6,13 @@ import { IQuestionState, initialQuestionState } from "../state/questions.state";
 
 const reducer = createReducer(
     initialQuestionState,
-    on(GetDataSuccess, (state, { data }) => {
-      console.log(data);
-      return data;
-    }
+    on(GetDataSuccess, (state, { data }) => (data)
     ),
-    on(CreateQuestionSuccess, (state, { question }) => {
-      console.log(question);
-      return ({...state, questions: [...state.questions.slice(), question]
-    })}
+    on(CreateQuestionSuccess, (state, { question }) => ({...state, questions: [...state.questions.slice(), question]
+    })
     ),
-    on(EditQuestionSuccess, (state, { question }) => {
-      console.log(question);
-      return ({...state, questions: changeQuestion(state.questions.slice(), question)
-    })}
+    on(EditQuestionSuccess, (state, { question }) => ({...state, questions: changeQuestion(state.questions.slice(), question)
+    })
     ),
     on(RemoveQuestionSuccess, (state, { question }) => ({...state, questions: removeQuestion(state.questions.slice(), question)
     })

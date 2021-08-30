@@ -13,7 +13,6 @@ export class InitialEffects {
         ofType(EQuestionActions.GetDataAction),
         map(() =>
         {
-          console.log("Жак де Молэ");
           let forJSON = this.infoService.getData();
           try {
             const data = JSON.parse(forJSON);

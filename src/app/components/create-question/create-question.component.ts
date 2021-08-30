@@ -22,9 +22,9 @@ export class CreateQuestionComponent implements OnInit {
   ) {
     this.question = this.fb.group(
       {
-        forType: new FormControl(0),
-        forText: new FormControl(""),
-        forAnswers: this.fb.array([])
+        type: new FormControl(0),
+        text: new FormControl(""),
+        answers: this.fb.array([])
       });
     
   }
@@ -35,32 +35,32 @@ export class CreateQuestionComponent implements OnInit {
 
   addQuestion() {
     let question = new IQuestion();
-    question.text = this.forText.value;
-    question.type = this.forType.value;
-    question.answers = this.forAnswers.controls.map(item => item.value.answer);
+    question.text = this.text.value;
+    question.type = this.type.value;
+    question.answers = this.answers.controls.map(item => item.value.answer);
     this.store.dispatch(CreateQuestion({question: question}));
     this.router.navigateByUrl('');
   }
 
   addOption() {
-    this.forAnswers.push(new FormGroup({
+    this.answers.push(new FormGroup({
       answer: new FormControl("")
     }));
   }
 
   deleteOption(i: number) {
-    this.forAnswers.removeAt(i);
+    this.answers.removeAt(i);
   }
 
-  get forAnswers() {
+  get answers() {
     return this.question.get('forAnswers') as FormArray;
   }
 
-  get forType() {
+  get type() {
     return this.question.get('forType') as FormControl;
   }
 
-  get forText() {
+  get text() {
     return this.question.get('forText') as FormControl;
   }
 

@@ -13,7 +13,6 @@ export class QuestionEffects {
     map(() =>
     {
       let forJSON = this.infoService.getData();
-      //console.log(forJSON);
       try {
         const data = JSON.parse(forJSON);
         return GetDataSuccess({data : data.questionState});
@@ -39,7 +38,7 @@ export class QuestionEffects {
       ));
     
     removeQuestion$ = createEffect(() => this.actions$.pipe(
-        ofType(EQuestionActions.RemoveAnswerAction),
+        ofType(EQuestionActions.RemoveQuestionAction),
         map((data: any) => (this.infoService.prototypeFunction(data.question, removeQuestion)) ? RemoveQuestionSuccess(data) : RemoveQuestionFailure()
           )
       ));

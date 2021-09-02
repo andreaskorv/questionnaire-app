@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
 import { ofType, Actions, createEffect } from "@ngrx/effects";
-import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { InfoService } from "src/app/shared/services/info.service";
-import { GetDataFailure, GetDataSuccess } from "../actions/initial.actions";
+import { GetDataFailure, GetDataSuccess } from "../actions/question.actions";
 import { EQuestionActions } from "../actions/question.actions";
 
 @Injectable()

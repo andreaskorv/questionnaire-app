@@ -8,7 +8,7 @@ import { QuestionManagementComponent } from './components/question-management/qu
 const routes: Routes = [
   { path: '', component: QuestionManagementComponent},
   { path: 'new', component: CreateQuestionComponent },
-  { path: 'edit', component: EditQuestionComponent},
+  { path: 'edit/:id', component: EditQuestionComponent},
   { path: 'lists', component: ListsOfQuestionComponent}
 ];
 

@@ -1,21 +1,21 @@
 import { IQuestion } from "./question";
 
-export function createQuestion(questions: IQuestion[], question: IQuestion) {
+export function createQuestion(questions: Object[], question: Object) {
     questions.push(question);
     return questions;
 }
 
-export function changeQuestion(questions: IQuestion[], question: IQuestion) {
-    questions = questions.filter(item => item.id != question.id);
+export function changeQuestion(questions: Object[], question: Object) {
+    questions = questions.filter(item => (item as IQuestion).id != (question as IQuestion).id);
     questions.push(question);
     return questions;
 }
 
-export function removeQuestion(questions: IQuestion[], question: string) {
-    questions = questions.filter(item => item.id != question);
+export function removeQuestion(questions: Object[], question: string) {
+    questions = questions.filter(item => (item as IQuestion).id != question);
     return questions;
 }
 
-export function sort (a: IQuestion, b: IQuestion) {
-    return (Date.parse(b.date) - Date.parse(a.date));
+export function sort (a:any, b:any) {
+    return (Date.parse((b as IQuestion).date) - Date.parse((a as IQuestion).date));
 }

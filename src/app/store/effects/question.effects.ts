@@ -4,6 +4,7 @@ import { CreateAnswerFailure, CreateAnswerSuccess, CreateQuestionFailure, Create
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { InfoService } from "src/app/shared/services/info.service";
 import { changeQuestion, createQuestion, removeQuestion } from "src/app/shared/modules/changedb";
+import { IQuestion } from "src/app/shared/modules/question";
 
 @Injectable()
 export class QuestionEffects {
@@ -14,8 +15,11 @@ export class QuestionEffects {
     {
       let forJSON = this.infoService.getData();
       try {
-        const data = JSON.parse(forJSON);
-        return GetDataSuccess({data : data.questionState});
+        const data = JSON.parse(forJSON).questionState.questions.map((item: IQuestion) => {
+          const {...object} = item;
+          return item;
+        });
+        return GetDataSuccess({data : data});
       }
       catch {
         return GetDataFailure();

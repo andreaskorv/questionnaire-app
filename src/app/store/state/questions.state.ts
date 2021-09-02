@@ -1,4 +1,4 @@
-import { IQuestion } from "src/app/shared/modules/question";
+/* import { IQuestion } from "src/app/shared/modules/question";
 
 export interface IQuestionState {
     questions: IQuestion[];
@@ -6,4 +6,4 @@ export interface IQuestionState {
 
 export const initialQuestionState: IQuestionState = {
     questions: []
-}
+} */

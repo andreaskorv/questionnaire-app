@@ -1,14 +1,56 @@
-import { createSelector } from '@ngrx/store';
-import { IQuestion } from 'src/app/shared/modules/question';
-import { IAnswer } from 'src/app/shared/modules/answer';
+import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 import { IAppState } from '../state/app.state';
 import { isQuestionAnswered } from 'src/app/shared/modules/isanswered';
 import { sort } from 'src/app/shared/modules/changedb';
+import { IQuestion } from 'src/app/shared/modules/question';
+import * as fromQuestion from '../reducers/question.reducers';
+import { EntityState } from '@ngrx/entity';
 
-export const selectAllQuestions = (state: IAppState) => {
-    let forReturn = state.questionState.questions.slice();
-    forReturn.sort(sort);
-    return forReturn;};
+
+export interface State {
+    questions: EntityState<IQuestion>;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const selectQuestionState = createFeatureSelector<fromQuestion.State>('questions');
+
+export const selectAllQuestions = createSelector(
+    selectQuestionState,
+    fromQuestion.selectAllQuestions
+);
+
+export const selectQuestionEntities = createSelector(
+    selectQuestionState,
+    fromQuestion.selectQuestionEntities
+  );
+
+  export const selectCertainQuestionId = createSelector(
+    selectQuestionState,
+    fromQuestion.getSelectedQuestionId
+  );
+
+export const selectCertainQuestion = createSelector(
+    selectQuestionEntities,
+    selectCertainQuestionId,
+    (questionEntities, questionId) => questionEntities[questionId]
+  );
+
+
+
+
 export const selectCertainQuestions = createSelector(
     (state: IAppState) => state,
     (
@@ -27,7 +69,7 @@ export const selectCertainQuestions = createSelector(
 export const selectAnsweredQuestions = (state: IAppState) => (selectCertainQuestions(state, true));
 export const selectUnansweredQuestions = (state: IAppState) => (selectCertainQuestions(state, false));
 
-export const selectCertainQuestion = createSelector(
+/* export const selectCertainQuestion = createSelector(
     (state: IAppState) => state,
     (
         state: IAppState,
@@ -39,4 +81,4 @@ export const selectCertainQuestion = createSelector(
         );
         return forReturn[0];
     }
-)
+) */

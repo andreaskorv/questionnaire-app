@@ -11,7 +11,7 @@
                 {{question.date}}
             </td>
             <td>
-                <button mat-raised-button routerLink="edit" color="primary" [queryParams]="{'id': question.id }">Edit</button>
+                <button mat-raised-button [routerLink]="['edit', question.id]" color="primary">Edit</button>
             </td>
             <td>
                 <button mat-raised-button color="warn" (click)="removeQuestion(i)">Delete</button>

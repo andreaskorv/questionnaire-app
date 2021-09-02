@@ -1,3 +1,4 @@
+import { FormArray, FormGroup } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { IAnswer } from "./answer";
 
@@ -29,5 +30,16 @@ export class IQuestion {
 
     deleteOption (i: number) {
         this.answers.splice(i, 1);
+    }
+
+    loadInformation(fg:FormGroup) {
+        this.text = fg.get("text")?.value;
+        this.type = fg.get("type")?.value;
+        this.answers = (fg.get("answers") as FormArray).controls.map(item => item.value.answer);
+    }
+
+    createPlainObject() {
+        const {...object} = this;
+        return object;
     }
 }

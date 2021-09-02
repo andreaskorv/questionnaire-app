@@ -1,7 +1,5 @@
-import { Action, createAction, props } from "@ngrx/store";
-import { IAnswer } from "src/app/shared/modules/answer";
+import { createAction, props } from "@ngrx/store";
 import { IQuestion } from "src/app/shared/modules/question";
-import { IQuestionState } from "../state/questions.state";
 
 
 export enum EQuestionActions {
@@ -9,29 +7,33 @@ export enum EQuestionActions {
     GetDataAction = '[Initial] Get Data',
     GetDataSuccessAction = '[Initial] Get Data Success',
     GetDataFailureAction = '[Initial] Get Data Failure',
-  CreateQuestionAction = '[Question] Create Question',
-  EditQuestionAction = '[Question] Edit Question',
-  RemoveQuestionAction = '[Question] Remove Question',
-  CreateAnswerAction = '[Answer] Create Answer',
-  RemoveAnswerAction = '[Answer] Remove Answer',
-  CreateQuestionSuccessAction = '[Question] Create Question Success',
-  EditQuestionSuccessAction = '[Question] Edit Question Success',
-  RemoveQuestionSuccessAction = '[Question] Remove Question Success',
-  CreateAnswerSuccessAction = '[Answer] Create Answer Success',
-  RemoveAnswerSuccessAction = '[Answer] Remove Answer Success',
-  CreateQuestionFailureAction = '[Question] Create Question Failure',
-  EditQuestionFailureAction = '[Question] Edit Question Failure',
-  RemoveQuestionFailureAction = '[Question] Remove Question Failure',
-  CreateAnswerFailureAction = '[Answer] Create Answer Failure',
-  RemoveAnswerFailureAction = '[Answer] Remove Answer Failure'
+    SelectQuestionAction = '[Question] Select Question',
+    CreateQuestionAction = '[Question] Create Question',
+    EditQuestionAction = '[Question] Edit Question',
+    RemoveQuestionAction = '[Question] Remove Question',
+    CreateAnswerAction = '[Answer] Create Answer',
+    RemoveAnswerAction = '[Answer] Remove Answer',
+    CreateQuestionSuccessAction = '[Question] Create Question Success',
+    EditQuestionSuccessAction = '[Question] Edit Question Success',
+    RemoveQuestionSuccessAction = '[Question] Remove Question Success',
+    CreateAnswerSuccessAction = '[Answer] Create Answer Success',
+    RemoveAnswerSuccessAction = '[Answer] Remove Answer Success',
+    CreateQuestionFailureAction = '[Question] Create Question Failure',
+    EditQuestionFailureAction = '[Question] Edit Question Failure',
+    RemoveQuestionFailureAction = '[Question] Remove Question Failure',
+    CreateAnswerFailureAction = '[Answer] Create Answer Failure',
+    RemoveAnswerFailureAction = '[Answer] Remove Answer Failure',
 }
 
 export const GetData = createAction(EQuestionActions.GetDataAction);
 
 export const GetDataSuccess = createAction(EQuestionActions.GetDataSuccessAction,
-    props<{data : IQuestionState}>());
+    props<{data : IQuestion[]}>());
 
 export const GetDataFailure = createAction(EQuestionActions.GetDataFailureAction);
+
+export const SelectQuestion = createAction(EQuestionActions.SelectQuestionAction,
+    props<{questionId : string}>());
 
 export const CreateQuestion = createAction(EQuestionActions.CreateQuestionAction,
     props<{question : IQuestion}>());

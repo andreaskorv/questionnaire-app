@@ -1,13 +1,14 @@
-<form class="example-form" [formGroup]="questionForm" (ngSubmit)="action()">
+<button mat-raised-button color="primary" routerLink="/">Return</button>
+<form class="example-form" [formGroup]="questionForm" (ngSubmit)="action(this)">
     <label class="example-margin">Question type:</label>
-    <mat-radio-group formControlName="type">
+    <mat-radio-group formControlName="type" required>
       <mat-radio-button class="example-margin" value="0">Single choice</mat-radio-button>
       <mat-radio-button class="example-margin" value="1">Multiple choice</mat-radio-button>
       <mat-radio-button class="example-margin" value="2">Open</mat-radio-button>
     </mat-radio-group>
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>Input question</mat-label>
-      <textarea matInput placeholder="Ex. Who was James of Molay?" formControlName="text"></textarea>
+      <textarea matInput placeholder="Ex. Who was James of Molay?" required formControlName="text"></textarea>
     </mat-form-field>
     <span *ngIf="type.value!=2">
       <label class="example-margin">Answers:</label>
@@ -22,5 +23,11 @@
       </span>
       <button type="button" mat-raised-button color="primary" (click)="addOption()">Add new option</button><br>
     </span>
-    <button type="submit" mat-raised-button color="primary">Change!</button>
+    <div *ngIf="questionForm.errors?.required">
+      Type and text are required
+    </div>
+    <div *ngIf="questionForm.errors?.optionsAbsense && (questionForm.touched || questionForm.dirty)" class="cross-validation-error-message alert alert-danger">
+      There is no options
+    </div>
+    <button type="submit" mat-raised-button color="primary">{{action.actionTitle}}</button>
   </form>

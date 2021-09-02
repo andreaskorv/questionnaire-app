@@ -1,7 +1,8 @@
 import { ActionReducerMap } from "@ngrx/store";
+import { State } from "../selectors";
 import { IAppState } from "../state/app.state";
-import { questionReducer } from "./question.reducers";
+import { reducer } from "./question.reducers";
 
-export const appReducers: ActionReducerMap<IAppState, any> = {
-    questionState: questionReducer
+export const appReducers: ActionReducerMap<State> = {
+    questions: reducer
 }

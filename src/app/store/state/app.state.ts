@@ -1,7 +1,9 @@
-import { IQuestionState, initialQuestionState } from "./questions.state";
+import { EntityState } from "@ngrx/entity";
+import { IQuestion } from "src/app/shared/modules/question";
+import { initialQuestionState } from "../reducers/question.reducers";
 
 export interface IAppState {
-    questionState: IQuestionState
+    questionState: EntityState<IQuestion>
 }
 
 export const initialAppState = {

@@ -34,7 +34,9 @@ export interface State extends EntityState<IQuestion> {
     return questionReducer(state, action);
   }
 
-  export const getSelectedQuestionId = (state: State) => state.selectedQuestionId;
+  export const getSelectedQuestionId = (state: State) => {
+    console.log(state.selectedQuestionId);
+    return state.selectedQuestionId};
 
   const {
     selectIds,

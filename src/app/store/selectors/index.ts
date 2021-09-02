@@ -11,20 +11,6 @@ export interface State {
     questions: EntityState<IQuestion>;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const selectQuestionState = createFeatureSelector<fromQuestion.State>('questions');
 
 export const selectAllQuestions = createSelector(
@@ -48,9 +34,6 @@ export const selectCertainQuestion = createSelector(
     (questionEntities, questionId) => questionEntities[questionId]
   );
 
-
-
-
 export const selectCertainQuestions = createSelector(
     (state: IAppState) => state,
     (
@@ -68,17 +51,3 @@ export const selectCertainQuestions = createSelector(
 
 export const selectAnsweredQuestions = (state: IAppState) => (selectCertainQuestions(state, true));
 export const selectUnansweredQuestions = (state: IAppState) => (selectCertainQuestions(state, false));
-
-/* export const selectCertainQuestion = createSelector(
-    (state: IAppState) => state,
-    (
-        state: IAppState,
-        id: string
-    ) => {
-        let forQuestions = state.questionState.questions.slice();
-        let forReturn = forQuestions.filter(
-            item => item.id == id
-        );
-        return forReturn[0];
-    }
-) */

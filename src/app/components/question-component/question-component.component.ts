@@ -3,7 +3,8 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IQuestion } from 'src/app/shared/modules/question';
-import { selectAllQuestions } from 'src/app/store/selectors';
+import { SelectQuestion } from 'src/app/store/actions/question.actions';
+import { selectAllQuestions, selectCertainQuestion } from 'src/app/store/selectors';
 import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({
@@ -39,9 +40,12 @@ export class QuestionComponentComponent implements OnInit {
   ngOnInit() {
     document.body.classList.add('bg-img');
     if (this.action.id) {
-      this.store.select(selectAllQuestions).subscribe(
+      //console.log(this.action.id);
+      this.store.dispatch(SelectQuestion({questionId : this.action.id}));
+      this.store.select(selectCertainQuestion).subscribe(
         data => {
-          this.question = data.filter(item => item.id == this.action.id)[0];
+          //console.log(data);
+          this.question = data || this.question;
         });
     }
     else {

@@ -24,7 +24,10 @@ export class EditQuestionComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.action.actionTitle = "Change!";
+    //console.log(this.action.id);
+    //console.log(this.route.snapshot.params['id']);
     this.action.id = this.route.snapshot.params['id'];
+    //console.log(this.action.id);
     
   }
 

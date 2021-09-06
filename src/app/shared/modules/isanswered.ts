@@ -1,5 +1,6 @@
-import { IQuestion } from "./question";
+import { IQuestion, trueAnswer } from "./question";
 
 export function isQuestionAnswered (question: IQuestion) {
-    return question.truth != undefined;
+    console.log(trueAnswer(question));
+    return trueAnswer(question) != "";
 }

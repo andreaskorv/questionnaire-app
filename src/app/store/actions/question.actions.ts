@@ -42,13 +42,13 @@ export const EditQuestion = createAction(EQuestionActions.EditQuestionAction,
     props<{question : IQuestion}>());
 
 export const RemoveQuestion = createAction(EQuestionActions.RemoveQuestionAction,
-    props<{question : string}>());
+    props<{questionId : string}>());
 
 export const CreateAnswer = createAction(EQuestionActions.CreateAnswerAction,
-    props<{question: IQuestion}>());
+    props<{questionId: string, answer: any}>());
 
 export const RemoveAnswer = createAction(EQuestionActions.RemoveAnswerAction,
-    props<{question: IQuestion}>());
+    props<{questionId: string}>());
 
     export const CreateQuestionSuccess = createAction(EQuestionActions.CreateQuestionSuccessAction,
         props<{question : IQuestion}>());
@@ -57,13 +57,13 @@ export const RemoveAnswer = createAction(EQuestionActions.RemoveAnswerAction,
         props<{question : IQuestion}>());
     
     export const RemoveQuestionSuccess = createAction(EQuestionActions.RemoveQuestionSuccessAction,
-        props<{question : string}>());
+        props<{questionId : string}>());
     
     export const CreateAnswerSuccess = createAction(EQuestionActions.CreateAnswerSuccessAction,
-        props<{question: IQuestion}>());
+        props<{questionId: string, answer: any}>());
     
     export const RemoveAnswerSuccess = createAction(EQuestionActions.RemoveAnswerSuccessAction,
-        props<{question: IQuestion}>());
+        props<{questionId: string}>());
 
         export const CreateQuestionFailure = createAction(EQuestionActions.CreateQuestionFailureAction);
         

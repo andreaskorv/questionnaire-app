@@ -25,9 +25,17 @@ export interface State extends EntityState<IQuestion> {
     on(SelectQuestion, (state, { questionId }) => ({ ...state, selectedQuestionId: questionId })),
     on(CreateQuestionSuccess, (state, { question }) => (adapter.addOne(question, state))),
     on(EditQuestionSuccess, (state, { question }) => (adapter.setOne(question, state))),
-    on(RemoveQuestionSuccess, (state, { question }) => (adapter.removeOne(question, state))),
-    on(CreateAnswerSuccess, (state, { question }) => (adapter.setOne(question, state))),
-    on(RemoveAnswerSuccess, (state, { question }) => (adapter.setOne(question, state))),
+    on(RemoveQuestionSuccess, (state, { questionId }) => (adapter.removeOne(questionId, state))),
+    on(CreateAnswerSuccess, (state, { questionId, answer }) => {
+      console.log(answer);
+      let forSet = {...state.entities[questionId], truth: answer};
+      console.log(forSet);
+      return adapter.setOne(forSet as IQuestion, state);
+    }),
+    on(RemoveAnswerSuccess, (state, { questionId }) => {
+      let forSet = state.entities[questionId] || new IQuestion();
+      return adapter.setOne({...forSet, truth: undefined}, state);
+    })
   );
   
   export function reducer(state: EntityState<IQuestion> | undefined, action: Action) {

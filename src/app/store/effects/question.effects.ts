@@ -3,7 +3,7 @@ import { ofType, Actions, createEffect } from "@ngrx/effects";
 import { CreateAnswerFailure, CreateAnswerSuccess, CreateQuestionFailure, CreateQuestionSuccess, EditQuestionFailure, EditQuestionSuccess, EQuestionActions, GetDataFailure, GetDataSuccess, RemoveAnswerFailure, RemoveAnswerSuccess, RemoveQuestionFailure, RemoveQuestionSuccess } from "../actions/question.actions";
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { InfoService } from "src/app/shared/services/info.service";
-import { changeQuestion, createQuestion, removeQuestion } from "src/app/shared/modules/changedb";
+import { changeAnswer, changeQuestion, createQuestion, removeAnswer, removeQuestion } from "src/app/shared/modules/changedb";
 import { IQuestion } from "src/app/shared/modules/question";
 
 @Injectable()
@@ -15,9 +15,9 @@ export class QuestionEffects {
     {
       let forJSON = this.infoService.getData();
       try {
-        const data = JSON.parse(forJSON).questionState.questions.map((item: IQuestion) => {
+        const data = JSON.parse(forJSON).map((item: IQuestion) => {
           const {...object} = item;
-          return item;
+          return object;
         });
         return GetDataSuccess({data : data});
       }
@@ -30,32 +30,32 @@ export class QuestionEffects {
     
     createQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(EQuestionActions.CreateQuestionAction),
-        map((data: any) => (this.infoService.prototypeFunction(data.question, createQuestion)) ? CreateQuestionSuccess(data) : CreateQuestionFailure()
+        map((data: any) => this.infoService.prototypeFunction(createQuestion, data.question) ? CreateQuestionSuccess(data) : CreateQuestionFailure()
           )
       ));
     
     editQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(EQuestionActions.EditQuestionAction),
-        map((data: any) => (this.infoService.prototypeFunction(data.question, changeQuestion)) ? EditQuestionSuccess(data) : EditQuestionFailure()
+        map((data: any) => this.infoService.prototypeFunction(changeQuestion, data.question) ? EditQuestionSuccess(data) : EditQuestionFailure()
         
           )
       ));
     
     removeQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(EQuestionActions.RemoveQuestionAction),
-        map((data: any) => (this.infoService.prototypeFunction(data.question, removeQuestion)) ? RemoveQuestionSuccess(data) : RemoveQuestionFailure()
+        map((data: any) => this.infoService.prototypeFunction(removeQuestion, data.questionId) ? RemoveQuestionSuccess(data) : RemoveQuestionFailure()
           )
       ));
     
     createAnswer$ = createEffect(() => this.actions$.pipe(
         ofType(EQuestionActions.CreateAnswerAction),
-        map((data: any) => (this.infoService.prototypeFunction(data.question, changeQuestion)) ? CreateAnswerSuccess(data) : CreateAnswerFailure()
+        map((data: any) => this.infoService.prototypeFunction(changeAnswer, data.questionId, data.answer) ? CreateAnswerSuccess(data) : CreateAnswerFailure()
           )
       ));
     
     removeAnswer$ = createEffect(() => this.actions$.pipe(
         ofType(EQuestionActions.RemoveAnswerAction),
-        map((data: any) => (this.infoService.prototypeFunction(data.question, changeQuestion)) ? RemoveAnswerSuccess(data) : RemoveAnswerFailure()
+        map((data: any) => this.infoService.prototypeFunction(removeAnswer, data.questionId) ? RemoveAnswerSuccess(data) : RemoveAnswerFailure()
           )
       ));
     

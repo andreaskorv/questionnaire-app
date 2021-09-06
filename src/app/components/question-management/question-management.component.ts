@@ -36,7 +36,7 @@ export class QuestionManagementComponent implements OnInit {
   }
 
   removeQuestion(index: number) {
-    this.store.dispatch(RemoveQuestion({question : this.questions[index].id}));
+    this.store.dispatch(RemoveQuestion({questionId : this.questions[index].id}));
   }
 
 }

@@ -1,6 +1,5 @@
 import { FormArray, FormGroup } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
-import { IAnswer } from "./answer";
 
 export enum EQuestionType {
     ESingleAnswer,
@@ -13,7 +12,7 @@ export class IQuestion {
     type: EQuestionType;
     answers: string[];
     date: string;
-    truth?: IAnswer;
+    truth?: any;
     id: string;
 
     constructor() {
@@ -23,23 +22,31 @@ export class IQuestion {
         this.date = new Date().toString();
         this.id = uuidv4();
     }
+}
 
-    addNewOption() {
-        this.answers.push("");
-    }
+export function loadInformation(question:IQuestion,fg:FormGroup) {
+    question.text = fg.get("text")?.value;
+    question.type = fg.get("type")?.value;
+    question.answers = (fg.get("answers") as FormArray).controls.map(item => item.value.answer);
+}
 
-    deleteOption (i: number) {
-        this.answers.splice(i, 1);
+export function trueAnswer(question:IQuestion): string {
+    //console.log(question.truth);
+    let forReturn = "";
+    if (question.truth) {
+        if (question.type == 0) {
+            console.log("Primo");
+            forReturn = question.answers[question.truth];
+        }
+        else if (question.type == 1) {
+            console.log("Secundo");
+            forReturn = question.answers.slice().filter((item, index) => ((question.truth as number[]).includes(index))).reduce((sum, current) => (sum + ", " + current));
+        }
+        else if (question.type == 2) {
+            console.log("Tertio");
+            forReturn = question.truth;
+        }
     }
-
-    loadInformation(fg:FormGroup) {
-        this.text = fg.get("text")?.value;
-        this.type = fg.get("type")?.value;
-        this.answers = (fg.get("answers") as FormArray).controls.map(item => item.value.answer);
-    }
-
-    createPlainObject() {
-        const {...object} = this;
-        return object;
-    }
+    //console.log(forReturn);
+    return forReturn;
 }

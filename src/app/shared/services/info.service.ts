@@ -15,16 +15,11 @@ export class InfoService {
     return localStorage.getItem("state") || "";
   }
 
-  prototypeFunction(question: any, func: any): boolean {
+  prototypeFunction(func: any, ...params: any[]): boolean {
     try {
       let storageValue = localStorage.getItem("state") || "";
       let state = JSON.parse(storageValue);
-      state = func(state.questionState.questions.slice(), question);
-      state = {
-        questionState: {
-          questions: state
-        }
-      };
+      state = func(state.slice(), ...params);
       let forSet = JSON.stringify(state);
       localStorage.setItem("state", forSet);
       return true;

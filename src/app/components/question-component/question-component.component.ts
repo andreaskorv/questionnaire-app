@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IQuestion } from 'src/app/shared/modules/question';
@@ -28,8 +28,8 @@ export class QuestionComponentComponent implements OnInit {
   ) {
     this.questionForm = this.formBuilder.group(
       {
-        type: new FormControl(0),
-        text: new FormControl(""),
+        type: new FormControl(0, Validators.required),
+        text: new FormControl("", Validators.required),
         answers: this.formBuilder.array([])
       },
       { validators : this.optionsAbsenseValidator}

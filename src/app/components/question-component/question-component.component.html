@@ -29,5 +29,5 @@
     <div *ngIf="questionForm.errors?.optionsAbsense && (questionForm.touched || questionForm.dirty)" class="cross-validation-error-message alert alert-danger">
       There is no options
     </div>
-    <button type="submit" mat-raised-button color="primary">{{action.actionTitle}}</button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="type.invalid || text.invalid || questionForm.errors?.required || questionForm.errors?.optionsAbsense">{{action.actionTitle}}</button>
   </form>

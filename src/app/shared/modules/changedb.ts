@@ -19,8 +19,8 @@ export function removeQuestion(questions: Object[], question: string) {
 export function changeAnswer(questions: Object[], questionId:string, answer:any) {
     for (let question of questions) {
         if ((question as IQuestion).id == questionId) {
-        (question as IQuestion).truth = answer;
-        break;
+            (question as IQuestion).truth = answer;
+            break;
         }
     }
     return questions;
@@ -29,8 +29,8 @@ export function changeAnswer(questions: Object[], questionId:string, answer:any)
 export function removeAnswer(questions: Object[], questionId: string) {
     for (let question of questions) {
         if ((question as IQuestion).id == questionId) {
-        (question as IQuestion).truth = undefined;
-        break;
+            (question as IQuestion).truth = undefined;
+            break;
         }
     }
     return questions;

@@ -28,8 +28,8 @@ export class QuestionComponentComponent implements OnInit {
   ) {
     this.questionForm = this.formBuilder.group(
       {
-        type: new FormControl(0, Validators.required),
-        text: new FormControl("", Validators.required),
+        type: ["0", Validators.required],
+        text: ["", Validators.required],
         answers: this.formBuilder.array([])
       },
       { validators : this.optionsAbsenseValidator}
@@ -40,17 +40,16 @@ export class QuestionComponentComponent implements OnInit {
   ngOnInit() {
     document.body.classList.add('bg-img');
     if (this.action.id) {
-      //console.log(this.action.id);
       this.store.dispatch(SelectQuestion({questionId : this.action.id}));
       this.store.select(selectCertainQuestion).subscribe(
         data => {
-          //console.log(data);
           this.question = data || this.question;
         });
     }
     else {
       this.question = new IQuestion();
     }
+    console.log(this.question);
     this.questionForm.patchValue(this.question);
     for (let answer of this.question.answers) {
       this.addOption(answer);

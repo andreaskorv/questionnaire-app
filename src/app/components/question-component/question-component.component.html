@@ -2,9 +2,9 @@
 <form class="example-form" [formGroup]="questionForm" (ngSubmit)="action(this)">
     <label class="example-margin">Question type:</label>
     <mat-radio-group formControlName="type" required>
-      <mat-radio-button class="example-margin" value="0">Single choice</mat-radio-button>
-      <mat-radio-button class="example-margin" value="1">Multiple choice</mat-radio-button>
-      <mat-radio-button class="example-margin" value="2">Open</mat-radio-button>
+      <mat-radio-button class="example-margin" [value]="'0'">Single choice</mat-radio-button>
+      <mat-radio-button class="example-margin" [value]="'1'">Multiple choice</mat-radio-button>
+      <mat-radio-button class="example-margin" [value]="'2'">Open</mat-radio-button>
     </mat-radio-group>
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>Input question</mat-label>

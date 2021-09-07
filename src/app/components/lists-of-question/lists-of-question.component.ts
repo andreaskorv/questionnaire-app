@@ -55,20 +55,20 @@ export class ListsOfQuestionComponent implements OnInit {
 
   isAnswerUncorrect(i: number) : boolean {
     let questionCard = this.unansweredQuestionsForm[i];
-    if (this.unansweredQuestions[i].type != 2) {
+    if (this.unansweredQuestions[i].type != EQuestionType.EOpenAnswer.toString()) {
       let forCheck = 0;
       for (let answer of (questionCard.get("multipleAnswers") as FormArray).controls) {
         let checkbox = (answer as FormGroup)?.get("isSelected");
         if (checkbox?.value) {
           forCheck++;
         }
-        if (forCheck > 1 && this.unansweredQuestions[i].type == 0) {
+        if (forCheck > 1 && this.unansweredQuestions[i].type == EQuestionType.ESingleAnswer.toString()) {
           return true;
         }
       }
       if (forCheck == 0) return true;
     }
-    else if (this.unansweredQuestions[i].type == 2) {
+    else if (this.unansweredQuestions[i].type == EQuestionType.EOpenAnswer.toString()) {
       return questionCard.get("text")?.value > 255;
     }
     return false;
@@ -78,11 +78,11 @@ export class ListsOfQuestionComponent implements OnInit {
     
     let questionCard = this.unansweredQuestionsForm[i];
     let forAnswer = undefined;
-    if (this.unansweredQuestions[i].type == EQuestionType.ESingleAnswer)
+    if (this.unansweredQuestions[i].type == EQuestionType.ESingleAnswer.toString())
     {
         forAnswer = questionCard.get("singleAnswer")?.value;
        }
-       else if (this.unansweredQuestions[i].type == EQuestionType.EMultipleAnswers) {
+       else if (this.unansweredQuestions[i].type == EQuestionType.EMultipleAnswers.toString()) {
         let answers = (questionCard.get("multipleAnswers") as FormArray).controls;
         forAnswer = [];
         for (let answer of answers) {
@@ -92,7 +92,7 @@ export class ListsOfQuestionComponent implements OnInit {
           }
         }
       }
-      else if (this.unansweredQuestions[i].type == EQuestionType.EOpenAnswer) {
+      else if (this.unansweredQuestions[i].type == EQuestionType.EOpenAnswer.toString()) {
 
         forAnswer = questionCard.get("openAnswer")?.value;
       }

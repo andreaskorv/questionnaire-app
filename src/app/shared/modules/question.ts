@@ -9,7 +9,7 @@ export enum EQuestionType {
 
 export class IQuestion {
     text: string;
-    type: EQuestionType;
+    type: string;
     answers: string[];
     date: string;
     truth?: any;
@@ -17,7 +17,7 @@ export class IQuestion {
 
     constructor() {
         this.text = "";
-        this.type = EQuestionType.ESingleAnswer;
+        this.type = "0";
         this.answers = [];
         this.date = new Date().toString();
         this.id = uuidv4();
@@ -34,16 +34,16 @@ export function trueAnswer(question:IQuestion): string {
     //console.log(question.truth);
     let forReturn = "";
     if (question.truth) {
-        if (question.type == 0) {
-            console.log("Primo");
+        if (question.type == "0") {
+            //console.log("Primo");
             forReturn = question.answers[question.truth];
         }
-        else if (question.type == 1) {
-            console.log("Secundo");
+        else if (question.type == "1") {
+            //console.log("Secundo");
             forReturn = question.answers.slice().filter((item, index) => ((question.truth as number[]).includes(index))).reduce((sum, current) => (sum + ", " + current));
         }
-        else if (question.type == 2) {
-            console.log("Tertio");
+        else if (question.type == "2") {
+            //console.log("Tertio");
             forReturn = question.truth;
         }
     }

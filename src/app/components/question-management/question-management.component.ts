@@ -39,4 +39,8 @@ export class QuestionManagementComponent implements OnInit {
     this.store.dispatch(RemoveQuestion({questionId : this.questions[index].id}));
   }
 
+  parseInt(str: string) {
+    return parseInt(str);
+  }
+
 }

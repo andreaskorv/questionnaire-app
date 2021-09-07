@@ -27,9 +27,9 @@ export interface State extends EntityState<IQuestion> {
     on(EditQuestionSuccess, (state, { question }) => (adapter.setOne(question, state))),
     on(RemoveQuestionSuccess, (state, { questionId }) => (adapter.removeOne(questionId, state))),
     on(CreateAnswerSuccess, (state, { questionId, answer }) => {
-      console.log(answer);
+      //console.log(answer);
       let forSet = {...state.entities[questionId], truth: answer};
-      console.log(forSet);
+      //console.log(forSet);
       return adapter.setOne(forSet as IQuestion, state);
     }),
     on(RemoveAnswerSuccess, (state, { questionId }) => {
@@ -43,7 +43,7 @@ export interface State extends EntityState<IQuestion> {
   }
 
   export const getSelectedQuestionId = (state: State) => {
-    console.log(state.selectedQuestionId);
+    //console.log(state.selectedQuestionId);
     return state.selectedQuestionId};
 
   const {

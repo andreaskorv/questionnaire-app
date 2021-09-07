@@ -49,7 +49,7 @@ export class QuestionComponentComponent implements OnInit {
     else {
       this.question = new IQuestion();
     }
-    console.log(this.question);
+    //console.log(this.question);
     this.questionForm.patchValue(this.question);
     for (let answer of this.question.answers) {
       this.addOption(answer);

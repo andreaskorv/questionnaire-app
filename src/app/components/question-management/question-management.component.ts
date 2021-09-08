@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { IQuestion } from 'src/app/shared/modules/question';
-import { RemoveAnswer, RemoveQuestion } from 'src/app/store/actions/question.actions';
+import { RemoveQuestion } from 'src/app/store/actions/question.actions';
 import { selectAllQuestions } from 'src/app/store/selectors';
 import { IAppState } from 'src/app/store/state/app.state';
 
@@ -14,12 +13,6 @@ import { IAppState } from 'src/app/store/state/app.state';
 export class QuestionManagementComponent implements OnInit {
 
   questions: IQuestion[] = [];
-
-  questionTypes: string[] = [
-    "Single answer",
-    "Multiple answers",
-    "Open answer"
-  ];
 
   constructor(
     private store: Store<IAppState>
@@ -35,12 +28,8 @@ export class QuestionManagementComponent implements OnInit {
   );
   }
 
-  removeQuestion(index: number) {
-    this.store.dispatch(RemoveQuestion({questionId : this.questions[index].id}));
-  }
-
-  parseInt(str: string) {
-    return parseInt(str);
+  removeQuestion(questionId: string) {
+    this.store.dispatch(RemoveQuestion({questionId : questionId}));
   }
 
 }

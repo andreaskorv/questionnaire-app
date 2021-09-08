@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { formAction } from 'src/app/shared/modules/formfunctions';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { IQuestion } from 'src/app/shared/modules/question';
 import { CreateQuestion } from 'src/app/store/actions/question.actions';
+import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-create-question',
@@ -15,13 +17,16 @@ export class CreateQuestionComponent implements OnInit {
   }
 
   question: IQuestion = new IQuestion();
-
-  action: any = formAction.bind(null, ((params:any) => (CreateQuestion(params))));
+  buttonCaption = "Create!";
 
   constructor(
-  ) {
-    this.action.actionTitle = "Create!";
-    this.action.id = undefined;
+    private store: Store<IAppState>,
+    private router: Router
+  ) {}
+
+  create(question: IQuestion) {
+    this.store.dispatch(CreateQuestion({ question : question}));
+    this.router.navigate(['']);
   }
 
 }

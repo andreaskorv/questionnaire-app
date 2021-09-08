@@ -3,7 +3,7 @@ import { ofType, Actions, createEffect } from "@ngrx/effects";
 import { CreateAnswerFailure, CreateAnswerSuccess, CreateQuestionFailure, CreateQuestionSuccess, EditQuestionFailure, EditQuestionSuccess, EQuestionActions, GetDataFailure, GetDataSuccess, RemoveAnswerFailure, RemoveAnswerSuccess, RemoveQuestionFailure, RemoveQuestionSuccess } from "../actions/question.actions";
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { InfoService } from "src/app/shared/services/info.service";
-import { changeAnswer, changeQuestion, createQuestion, removeAnswer, removeQuestion } from "src/app/shared/modules/changedb";
+import { changeAnswer, changeQuestion, createQuestion, removeAnswer, removeQuestion } from "src/app/shared/modules/functions";
 import { IQuestion } from "src/app/shared/modules/question";
 
 @Injectable()

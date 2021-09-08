@@ -1,65 +1,68 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { IQuestion } from 'src/app/shared/modules/question';
-import { SelectQuestion } from 'src/app/store/actions/question.actions';
-import { selectAllQuestions, selectCertainQuestion } from 'src/app/store/selectors';
-import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-question-component',
   templateUrl: './question-component.component.html',
   styleUrls: ['./question-component.component.scss']
 })
-export class QuestionComponentComponent implements OnInit {
+export class QuestionComponentComponent implements OnInit, AfterViewChecked {
 
   questionForm: FormGroup;
-  question: IQuestion = new IQuestion();
   id: string = "";
   date: string = "";
 
-  @Input() action: any;
+  @Input() question = new IQuestion();
+  @Input() buttonCaption = "";
+  @Output() action = new EventEmitter<IQuestion>();
 
   constructor(
-    private store: Store<IAppState>,
     private formBuilder: FormBuilder,
-    private router: Router
+    private changeDetector : ChangeDetectorRef
   ) {
     this.questionForm = this.formBuilder.group(
       {
         type: ["0", Validators.required],
-        text: ["", Validators.required],
-        answers: this.formBuilder.array([])
-      },
-      { validators : this.optionsAbsenseValidator}
+        text: ["", Validators.required]
+      }
     );
     
   }
 
+  submit() {
+    this.question.loadInformation(this.questionForm);
+    this.action.emit(this.question);
+  }
+
   ngOnInit() {
     document.body.classList.add('bg-img');
-    if (this.action.id) {
-      this.store.dispatch(SelectQuestion({questionId : this.action.id}));
-      this.store.select(selectCertainQuestion).subscribe(
-        data => {
-          this.question = data || this.question;
-        });
-    }
-    else {
-      this.question = new IQuestion();
-    }
-    //console.log(this.question);
     this.questionForm.patchValue(this.question);
-    for (let answer of this.question.answers) {
-      this.addOption(answer);
+    this.changeAnswers(this.question.type);
+    this.type.valueChanges.subscribe(value => this.changeAnswers(value));
+  }
+
+  ngAfterViewChecked(){
+     this.changeDetector.detectChanges();
+    }
+
+  changeAnswers(type: string) {
+    if (type == "2") {
+      this.questionForm.removeControl("answers");
+    } else if (!this.questionForm.contains("answers")) {
+      this.questionForm.addControl("answers", this.formBuilder.array([]));
+      for (let answer of this.question.answers) {
+        this.addOption(answer);
+      }
+      this.answers.setValidators(this.optionsAbsenseValidator);
     }
   }
 
   optionsAbsenseValidator: ValidatorFn = (control: AbstractControl) => {
-    const type = control.get("type");
-    const answers = control.get("answers");
-    return (type && answers && type.value != 2 && (answers as FormArray).controls.length == 0) ? { optionsAbsense : true} : null;
+
+    const answers = control as FormArray;
+    return (answers.controls.length == 0) ? { optionsAbsense : true} : null;
   }
 
   addOption(answer: string = "") {
@@ -83,5 +86,4 @@ export class QuestionComponentComponent implements OnInit {
   get text() {
     return this.questionForm.get('text') as FormControl;
   }
-
 }

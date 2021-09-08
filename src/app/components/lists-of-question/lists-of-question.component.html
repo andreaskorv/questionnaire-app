@@ -39,7 +39,7 @@
                 <mat-card *ngFor="let question of answeredQuestions; let i = index" class="cardclass">
                     <mat-label><b>{{question.text}}</b></mat-label>
                     <mat-label>
-                        {{trueAnswer(question)}}
+                        {{question.trueAnswer()}}
                     </mat-label><br>
                     <button mat-raised-button (click)="removeAnswer(i)" color="warn">Delete answer</button>
                 </mat-card>

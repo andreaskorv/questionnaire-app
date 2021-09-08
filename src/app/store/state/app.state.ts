@@ -3,7 +3,7 @@ import { IQuestion } from "src/app/shared/modules/question";
 import { initialQuestionState } from "../reducers/question.reducers";
 
 export interface IAppState {
-    questionState: EntityState<IQuestion>
+    questionState: EntityState<Object>
 }
 
 export const initialAppState = {

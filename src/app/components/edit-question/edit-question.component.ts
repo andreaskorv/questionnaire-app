@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { formAction } from 'src/app/shared/modules/formfunctions';
 import { IQuestion } from 'src/app/shared/modules/question';
-import { EditQuestion } from 'src/app/store/actions/question.actions';
+import { EditQuestion, SelectQuestion } from 'src/app/store/actions/question.actions';
+import { selectCertainQuestion } from 'src/app/store/selectors';
+import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-edit-question',
@@ -17,18 +19,25 @@ export class EditQuestionComponent implements OnInit {
   }
 
   question: IQuestion = new IQuestion();
-  querySubscription: Subscription | undefined;
-  action: any = formAction.bind(null, ((params:any) => (EditQuestion(params))));
+  buttonCaption = "Change!";
 
   constructor(
-    private route: ActivatedRoute
+    private store: Store<IAppState>,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
-    this.action.actionTitle = "Change!";
-    //console.log(this.action.id);
-    //console.log(this.route.snapshot.params['id']);
-    this.action.id = this.route.snapshot.params['id'];
-    //console.log(this.action.id);
+    this.store.dispatch(SelectQuestion({questionId : this.route.snapshot.params['id']}));
+      this.store.select(selectCertainQuestion).subscribe(
+        data => {
+          this.question = data || this.question;
+          
+        });
     
+  }
+
+  edit(question:IQuestion) {
+    this.store.dispatch(EditQuestion({ question : question}));
+    this.router.navigate(['']);
   }
 
 }

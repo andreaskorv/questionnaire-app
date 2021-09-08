@@ -1,22 +1,33 @@
 import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 import { IAppState } from '../state/app.state';
-import { isQuestionAnswered } from 'src/app/shared/modules/isanswered';
-import { sort } from 'src/app/shared/modules/changedb';
+import { copyObject, sort } from 'src/app/shared/modules/functions';
 import { IQuestion } from 'src/app/shared/modules/question';
 import * as fromQuestion from '../reducers/question.reducers';
 import { EntityState } from '@ngrx/entity';
 
 
 export interface State {
-    questions: EntityState<IQuestion>;
-  }
+  questions: EntityState<Object>;
+}
 
 export const selectQuestionState = createFeatureSelector<fromQuestion.State>('questions');
 
-export const selectAllQuestions = createSelector(
+const selectQuestions = createSelector(
     selectQuestionState,
     fromQuestion.selectAllQuestions
 );
+
+export const selectAllQuestions = createSelector(
+  (state: IAppState) => state,
+    (
+        state: IAppState
+    ) => {
+        let forQuestions = selectQuestions(state);
+        let forReturn = forQuestions.map((item) => (copyObject(item)));
+        forReturn.sort(sort);
+        return forReturn;
+    }
+)
 
 export const selectQuestionEntities = createSelector(
     selectQuestionState,
@@ -31,7 +42,7 @@ export const selectQuestionEntities = createSelector(
 export const selectCertainQuestion = createSelector(
     selectQuestionEntities,
     selectCertainQuestionId,
-    (questionEntities, questionId) => questionEntities[questionId]
+    (questionEntities, questionId) => copyObject(questionEntities[questionId] as Object)
   );
 
 export const selectCertainQuestions = createSelector(
@@ -42,7 +53,7 @@ export const selectCertainQuestions = createSelector(
     ) => {
         let forQuestions = selectAllQuestions(state);
         let forReturn = forQuestions.filter(
-            item => isQuestionAnswered(item) == isAnswered
+            item => Boolean(item.trueAnswer()) == isAnswered
         );
         forReturn.sort(sort);
         return forReturn;

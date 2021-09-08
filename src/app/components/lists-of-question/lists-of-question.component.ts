@@ -5,7 +5,6 @@ import { EQuestionType, IQuestion } from 'src/app/shared/modules/question';
 import { CreateAnswer, RemoveAnswer } from 'src/app/store/actions/question.actions';
 import { selectAnsweredQuestions, selectUnansweredQuestions } from 'src/app/store/selectors';
 import { IAppState } from 'src/app/store/state/app.state';
-import { trueAnswer } from 'src/app/shared/modules/question';
 
 @Component({
   selector: 'app-lists-of-question',
@@ -37,12 +36,9 @@ export class ListsOfQuestionComponent implements OnInit {
       data => {this.unansweredQuestions = data;
         this.unansweredQuestionsForm = [];
         for (let unansweredQuestion of this.unansweredQuestions) {
-          let forAnswers = [];
-          for (let answer of unansweredQuestion.answers) {
-            forAnswers.push(new FormGroup({
-              isSelected: new FormControl(false)
-            }));
-          }
+          let forAnswers = unansweredQuestion.answers.map((item) => (new FormGroup({
+            isSelected: new FormControl(false)
+          })));
           this.unansweredQuestionsForm.push(this.formBuilder.group({
             singleAnswer: new FormControl(0),
             multipleAnswers: this.formBuilder.array(forAnswers),
@@ -53,52 +49,27 @@ export class ListsOfQuestionComponent implements OnInit {
     );
   }
 
-  isAnswerUncorrect(i: number) : boolean {
-    let questionCard = this.unansweredQuestionsForm[i];
-    if (this.unansweredQuestions[i].type != EQuestionType.EOpenAnswer.toString()) {
-      let forCheck = 0;
-      for (let answer of (questionCard.get("multipleAnswers") as FormArray).controls) {
-        let checkbox = (answer as FormGroup)?.get("isSelected");
-        if (checkbox?.value) {
-          forCheck++;
-        }
-        if (forCheck > 1 && this.unansweredQuestions[i].type == EQuestionType.ESingleAnswer.toString()) {
-          return true;
-        }
-      }
-      if (forCheck == 0) return true;
-    }
-    else if (this.unansweredQuestions[i].type == EQuestionType.EOpenAnswer.toString()) {
-      return questionCard.get("text")?.value > 255;
-    }
-    return false;
-  }
-
   addAnswer(i: number) {
     
     let questionCard = this.unansweredQuestionsForm[i];
     let forAnswer = undefined;
     if (this.unansweredQuestions[i].type == EQuestionType.ESingleAnswer.toString())
     {
-        forAnswer = questionCard.get("singleAnswer")?.value;
-       }
-       else if (this.unansweredQuestions[i].type == EQuestionType.EMultipleAnswers.toString()) {
-        let answers = (questionCard.get("multipleAnswers") as FormArray).controls;
-        forAnswer = [];
-        for (let answer of answers) {
-          let checkbox = (answer as FormGroup)?.get("isSelected");
-          if (checkbox?.value) {
-            forAnswer.push(answers.indexOf(answer));
-          }
+      forAnswer = questionCard.get("singleAnswer")?.value;
+    }
+    else if (this.unansweredQuestions[i].type == EQuestionType.EMultipleAnswers.toString()) {
+      let answers = (questionCard.get("multipleAnswers") as FormArray).controls;
+      forAnswer = [];
+      for (let answer of answers) {
+        let checkbox = (answer as FormGroup)?.get("isSelected");
+        if (checkbox?.value) {
+          forAnswer.push(answers.indexOf(answer));
         }
       }
-      else if (this.unansweredQuestions[i].type == EQuestionType.EOpenAnswer.toString()) {
-
-        forAnswer = questionCard.get("openAnswer")?.value;
-      }
-    
-
-
+    }
+    else if (this.unansweredQuestions[i].type == EQuestionType.EOpenAnswer.toString()) {
+      forAnswer = questionCard.get("openAnswer")?.value;
+    }
     this.store.dispatch(CreateAnswer({questionId : this.unansweredQuestions[i].id, answer : forAnswer}));
   }
 
@@ -109,11 +80,7 @@ export class ListsOfQuestionComponent implements OnInit {
   }
 
   check(i: number, j: number) : boolean {
-      return this.answeredQuestions[i].truth?.closedAnswer.includes(j) || false;
-  }
-
-  trueAnswer(question: IQuestion) {
-    return trueAnswer(question);
+    return this.answeredQuestions[i].truth?.closedAnswer.includes(j) || false;
   }
 
 }

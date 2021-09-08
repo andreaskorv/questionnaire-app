@@ -39,3 +39,14 @@ export function removeAnswer(questions: Object[], questionId: string) {
 export function sort (a:any, b:any) {
     return (Date.parse((b as IQuestion).date) - Date.parse((a as IQuestion).date));
 }
+
+export function copyObject(object: Object) {
+    let forReturn = new IQuestion();
+          forReturn.id = (object as IQuestion).id;
+          forReturn.type = (object as IQuestion).type;
+          forReturn.text = (object as IQuestion).text;
+          forReturn.date = (object as IQuestion).date;
+          forReturn.answers = (object as IQuestion).answers;
+          forReturn.truth = (object as IQuestion).truth;
+          return forReturn;
+}

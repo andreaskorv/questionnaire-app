@@ -1,20 +1,19 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
 import { Action, ActionReducerMap, createReducer, on } from "@ngrx/store";
-import { changeQuestion, removeQuestion, sort } from "src/app/shared/modules/changedb";
-import { IQuestion } from "src/app/shared/modules/question";
+import { changeQuestion, removeQuestion, sort } from "src/app/shared/modules/functions";
 import { CreateAnswerSuccess, CreateQuestionSuccess, EditQuestionSuccess, GetDataSuccess, RemoveAnswerSuccess, RemoveQuestionSuccess, SelectQuestion } from "../actions/question.actions";
 
 
-export interface State extends EntityState<IQuestion> {
+export interface State extends EntityState<Object> {
   // additional entities state properties
   selectedQuestionId: string;
 }
 
-  export const adapter: EntityAdapter<IQuestion> = createEntityAdapter<IQuestion>({
+  export const adapter: EntityAdapter<Object> = createEntityAdapter<Object>({
     sortComparer: sort,
   });
 
-  export const initialQuestionState: EntityState<IQuestion> = adapter.getInitialState({
+  export const initialQuestionState: EntityState<Object> = adapter.getInitialState({
     // additional entity state properties
     selectedQuestionId: "",
   });
@@ -26,25 +25,15 @@ export interface State extends EntityState<IQuestion> {
     on(CreateQuestionSuccess, (state, { question }) => (adapter.addOne(question, state))),
     on(EditQuestionSuccess, (state, { question }) => (adapter.setOne(question, state))),
     on(RemoveQuestionSuccess, (state, { questionId }) => (adapter.removeOne(questionId, state))),
-    on(CreateAnswerSuccess, (state, { questionId, answer }) => {
-      //console.log(answer);
-      let forSet = {...state.entities[questionId], truth: answer};
-      //console.log(forSet);
-      return adapter.setOne(forSet as IQuestion, state);
-    }),
-    on(RemoveAnswerSuccess, (state, { questionId }) => {
-      let forSet = state.entities[questionId] || new IQuestion();
-      return adapter.setOne({...forSet, truth: undefined}, state);
-    })
+    on(CreateAnswerSuccess, (state, { questionId, answer }) => (adapter.setOne({...state.entities[questionId], truth: answer} as Object, state))),
+    on(RemoveAnswerSuccess, (state, { questionId }) => (adapter.setOne({...state.entities[questionId], truth: undefined} as Object, state)))
   );
   
-  export function reducer(state: EntityState<IQuestion> | undefined, action: Action) {
+  export function reducer(state: EntityState<Object> | undefined, action: Action) {
     return questionReducer(state, action);
   }
 
-  export const getSelectedQuestionId = (state: State) => {
-    //console.log(state.selectedQuestionId);
-    return state.selectedQuestionId};
+  export const getSelectedQuestionId = (state: State) => (state.selectedQuestionId);
 
   const {
     selectIds,

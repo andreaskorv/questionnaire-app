@@ -21,32 +21,38 @@ export class IQuestion {
         this.answers = [];
         this.date = new Date().toString();
         this.id = uuidv4();
+        this.questionTypes = [
+            "Single answer",
+            "Multiple answers",
+            "Open answer"
+          ];
     }
-}
 
-export function loadInformation(question:IQuestion,fg:FormGroup) {
-    question.text = fg.get("text")?.value;
-    question.type = fg.get("type")?.value;
-    question.answers = (fg.get("answers") as FormArray).controls.map(item => item.value.answer);
-}
+    questionTypes: string[] = [];
 
-export function trueAnswer(question:IQuestion): string {
-    //console.log(question.truth);
-    let forReturn = "";
-    if (question.truth) {
-        if (question.type == "0") {
-            //console.log("Primo");
-            forReturn = question.answers[question.truth];
-        }
-        else if (question.type == "1") {
-            //console.log("Secundo");
-            forReturn = question.answers.slice().filter((item, index) => ((question.truth as number[]).includes(index))).reduce((sum, current) => (sum + ", " + current));
-        }
-        else if (question.type == "2") {
-            //console.log("Tertio");
-            forReturn = question.truth;
-        }
+    getType() {
+        return this.questionTypes[parseInt(this.type)];
     }
-    //console.log(forReturn);
-    return forReturn;
+
+    loadInformation(fg:FormGroup) {
+        this.text = fg.get("text")?.value;
+        this.type = fg.get("type")?.value;
+        if (fg.contains("answers")){
+        this.answers = (fg.get("answers") as FormArray).controls.map(item => item.value.answer);}
+    }
+    
+    trueAnswer(): string {
+        if (this.truth) {
+            if (this.type == "0") {
+                return this.answers[this.truth];
+            }
+            else if (this.type == "1") {
+                return this.answers.slice().filter((item, index) => ((this.truth as number[]).includes(index))).reduce((sum, current) => (sum + ", " + current));
+            }
+            else if (this.type == "2") {
+                return this.truth;
+            }
+        }
+        return "";
+    }
 }

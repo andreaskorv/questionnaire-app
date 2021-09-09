@@ -10,7 +10,7 @@ export enum EQuestionType {
 export class IQuestion {
     text: string;
     type: string;
-    answers: string[];
+    options: string[];
     date: string;
     truth?: any;
     id: string;
@@ -18,7 +18,7 @@ export class IQuestion {
     constructor() {
         this.text = "";
         this.type = "0";
-        this.answers = [];
+        this.options = [];
         this.date = new Date().toString();
         this.id = uuidv4();
         this.questionTypes = [
@@ -37,17 +37,17 @@ export class IQuestion {
     loadInformation(fg:FormGroup) {
         this.text = fg.get("text")?.value;
         this.type = fg.get("type")?.value;
-        if (fg.contains("answers")){
-        this.answers = (fg.get("answers") as FormArray).controls.map(item => item.value.answer);}
+        if (fg.contains("options")){
+        this.options = (fg.get("options") as FormArray).controls.map(item => item.value.answer);}
     }
     
     trueAnswer(): string {
-        if (this.truth) {
+        if (this.truth || this.truth == 0) {
             if (this.type == "0") {
-                return this.answers[this.truth];
+                return this.options[this.truth].toString();
             }
             else if (this.type == "1") {
-                return this.answers.slice().filter((item, index) => ((this.truth as number[]).includes(index))).reduce((sum, current) => (sum + ", " + current));
+                return this.options.slice().filter((item, index) => ((this.truth as number[]).includes(index))).reduce((sum, current) => (sum + ", " + current));
             }
             else if (this.type == "2") {
                 return this.truth;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { State, Store } from '@ngrx/store';
+import { multipleAnswersCollector } from 'src/app/shared/modules/functions';
 import { EQuestionType, IQuestion } from 'src/app/shared/modules/question';
 import { CreateAnswer, RemoveAnswer } from 'src/app/store/actions/question.actions';
 import { selectAnsweredQuestions, selectUnansweredQuestions } from 'src/app/store/selectors';
@@ -33,18 +34,28 @@ export class ListsOfQuestionComponent implements OnInit {
       }
     );
     this.store.select(selectUnansweredQuestions).subscribe(
-      data => {this.unansweredQuestions = data;
-        this.unansweredQuestionsForm = [];
-        for (let unansweredQuestion of this.unansweredQuestions) {
-          let forAnswers = unansweredQuestion.answers.map((item) => (new FormGroup({
-            isSelected: new FormControl(false)
-          })));
-          this.unansweredQuestionsForm.push(this.formBuilder.group({
-            singleAnswer: new FormControl(0),
-            multipleAnswers: this.formBuilder.array(forAnswers),
-            openAnswer: new FormControl("")
-          }));
-        }
+      data => {
+        this.unansweredQuestions = data;
+        this.unansweredQuestionsForm = this.unansweredQuestions.map((item, index) => {
+          switch (item.type) {
+            case "0":
+              return (this.formBuilder.group({
+                answer: new FormControl(0)
+              }));
+              break;
+            case "1":
+              return (this.formBuilder.group({
+                answer: this.formBuilder.array(Array.from({length : item.options.length}).fill(false))
+              }));
+              break;
+            default:
+            case "2":
+              return (this.formBuilder.group({
+                answer: new FormControl("")
+              }));
+              break;
+          }
+        });
       }
     );
   }
@@ -52,23 +63,9 @@ export class ListsOfQuestionComponent implements OnInit {
   addAnswer(i: number) {
     
     let questionCard = this.unansweredQuestionsForm[i];
-    let forAnswer = undefined;
-    if (this.unansweredQuestions[i].type == EQuestionType.ESingleAnswer.toString())
-    {
-      forAnswer = questionCard.get("singleAnswer")?.value;
-    }
-    else if (this.unansweredQuestions[i].type == EQuestionType.EMultipleAnswers.toString()) {
-      let answers = (questionCard.get("multipleAnswers") as FormArray).controls;
-      forAnswer = [];
-      for (let answer of answers) {
-        let checkbox = (answer as FormGroup)?.get("isSelected");
-        if (checkbox?.value) {
-          forAnswer.push(answers.indexOf(answer));
-        }
-      }
-    }
-    else if (this.unansweredQuestions[i].type == EQuestionType.EOpenAnswer.toString()) {
-      forAnswer = questionCard.get("openAnswer")?.value;
+    let forAnswer = questionCard.get("answer")?.value;
+    if (this.unansweredQuestions[i].type == EQuestionType.EMultipleAnswers.toString()) {
+      forAnswer = forAnswer.reduce(multipleAnswersCollector, []);
     }
     this.store.dispatch(CreateAnswer({questionId : this.unansweredQuestions[i].id, answer : forAnswer}));
   }
@@ -79,8 +76,9 @@ export class ListsOfQuestionComponent implements OnInit {
     }));
   }
 
-  check(i: number, j: number) : boolean {
-    return this.answeredQuestions[i].truth?.closedAnswer.includes(j) || false;
+  answers(i: number, j: number) {
+    let forArray = this.unansweredQuestionsForm[i].get("answer") as FormArray;
+    return forArray.at(j) as FormControl;
   }
 
 }

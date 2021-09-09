@@ -42,11 +42,17 @@ export function sort (a:any, b:any) {
 
 export function copyObject(object: Object) {
     let forReturn = new IQuestion();
-          forReturn.id = (object as IQuestion).id;
-          forReturn.type = (object as IQuestion).type;
-          forReturn.text = (object as IQuestion).text;
-          forReturn.date = (object as IQuestion).date;
-          forReturn.answers = (object as IQuestion).answers;
-          forReturn.truth = (object as IQuestion).truth;
-          return forReturn;
+    forReturn.id = (object as IQuestion).id;
+    forReturn.type = (object as IQuestion).type;
+    forReturn.text = (object as IQuestion).text;
+    forReturn.date = (object as IQuestion).date;
+    forReturn.options = (object as IQuestion).options;
+    forReturn.truth = (object as IQuestion).truth;
+    return forReturn;
+}
+
+export function multipleAnswersCollector (sum:any, current:any, index:number)
+{
+    if (current) sum.push(index);
+    return sum;
 }

@@ -49,13 +49,13 @@ export class QuestionComponentComponent implements OnInit, AfterViewChecked {
 
   changeAnswers(type: string) {
     if (type == "2") {
-      this.questionForm.removeControl("answers");
-    } else if (!this.questionForm.contains("answers")) {
-      this.questionForm.addControl("answers", this.formBuilder.array([]));
-      for (let answer of this.question.answers) {
+      this.questionForm.removeControl("options");
+    } else if (!this.questionForm.contains("options")) {
+      this.questionForm.addControl("options", this.formBuilder.array([]));
+      for (let answer of this.question.options) {
         this.addOption(answer);
       }
-      this.answers.setValidators(this.optionsAbsenseValidator);
+      this.options.setValidators(this.optionsAbsenseValidator);
     }
   }
 
@@ -66,17 +66,17 @@ export class QuestionComponentComponent implements OnInit, AfterViewChecked {
   }
 
   addOption(answer: string = "") {
-    (this.answers as FormArray).push(new FormGroup({
+    (this.options as FormArray).push(new FormGroup({
       answer: new FormControl(answer)
     }));
   }
 
   deleteOption(i: number) {
-    (this.answers as FormArray).removeAt(i);
+    (this.options as FormArray).removeAt(i);
   }
 
-  get answers() {
-    return this.questionForm.get('answers') as FormArray;
+  get options() {
+    return this.questionForm.get('options') as FormArray;
   }
 
   get type() {

@@ -52,7 +52,6 @@ export const selectCertainQuestions = createSelector(
         isAnswered: boolean
     ) => {
         let forQuestions = selectAllQuestions(state);
-        console.log(forQuestions);
         let forReturn = forQuestions.filter(
             item => Boolean(item.trueAnswer()) == isAnswered
         );

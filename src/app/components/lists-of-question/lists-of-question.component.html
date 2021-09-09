@@ -28,7 +28,7 @@
                                 </mat-form-field>
                             </ng-template>
                         </div>
-                        <button type="submit" mat-raised-button color="primary">Add answer</button>
+                        <button [disabled]="isAnswerValid(i)" type="submit" mat-raised-button color="primary">Add answer</button>
                     </mat-card>
                 </form>
                 <br>

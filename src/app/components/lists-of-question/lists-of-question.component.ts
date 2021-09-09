@@ -81,4 +81,17 @@ export class ListsOfQuestionComponent implements OnInit {
     return forArray.at(j) as FormControl;
   }
 
+  isAnswerValid(i: number) {
+    let questionCard = this.unansweredQuestionsForm[i];
+    let forAnswer = questionCard.get("answer")?.value;
+    if (this.unansweredQuestions[i].type == EQuestionType.EMultipleAnswers.toString()) {
+      forAnswer = forAnswer.reduce(multipleAnswersCollector, []);
+      return (forAnswer.length == 0);
+    }
+    if (this.unansweredQuestions[i].type == EQuestionType.EOpenAnswer.toString()) {
+      return (forAnswer.length == 0);
+    }
+    return false;
+  }
+
 }
